@@ -1,0 +1,24 @@
+{
+    "name": "bredi/bredi-dashboard",
+    "description": "",
+    "authors": [{
+        "name": "Rodrigo de Souza",
+        "email": "rd7.rodrigo@gmail.com"
+    }],
+    "extra": {
+        "laravel": {
+            "providers": ["Bredi\\BrediDashboard\\Providers\\BrediDashboardServiceProvider"],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Bredi\\BrediDashboard\\": ""
+        }
+    },
+    "require": {
+        "barryvdh/laravel-debugbar": "^3.2",
+        "igaster/laravel-theme": "^2.0",
+        "laravelcollective/html": "^5.4.0"
+    }
+}
