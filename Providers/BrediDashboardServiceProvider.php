@@ -2,11 +2,13 @@
 
 namespace Bredi\BrediDashboard\Providers;
 
-use Bredi\BrediDashboard\Models\Permissao;
 use DB;
-use Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Factory;
 // use Illuminate\Support\ServiceProvider;
+use Bredi\BrediDashboard\Models\Permissao;
+use Bredi\BrediDashboard\Models\UserGrupoUsuario;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class BrediDashboardServiceProvider extends ServiceProvider
@@ -25,6 +27,7 @@ class BrediDashboardServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
         // dd('aqsdfsfsdui');
         $this->registerTranslations();
         $this->registerConfig();
@@ -33,22 +36,42 @@ class BrediDashboardServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         $this->registraPermissoes();
+  
     }
-    protected function registraPermissoes()
+    public function registraPermissoes()
     {
-        // $this->registerPolicies();
+        $this->registerPolicies();
+        
+        dd('aqwio', Auth::user(), session());
+        if (session()->has('permissao') and session('permissao')) {
+            foreach (session('permissao') as $permissao) {
+                dd($permissao);
+            }
+        }
+        // if (Schema::hasTable('transacaos')) {
+        //     $transacaos = Transacao::get();
+
+        //     if (isset($transacaos)) {
+        //         foreach ($transacaos as $transacao) {
+        //             Gate::define($transacao->nome, function ($user) use ($transacao) {
+        //                 return array_key_exists($transacao->id, session('permissao'));
+        //             });
+        //         }
+        //     }
+        // }
+            
         if(\Schema::hasTable('transacaos')) {
             $transacaos = DB::table('transacaos')->get();
-            $permissaos = Permissao::get()->KeyBy('transacao_id')->toArray();
-            // dd($permissaos);
+            $permissaos = DB::table('permissaos')->get()->KeyBy('transacao_id')->toArray();
+
             if (isset($transacaos)) {
                 foreach ($transacaos as $transacao) {
-                    // dd($transacaos, $permissaos->toArray());
-                    Gate::define($transacao->permissao, function () use ($transacao) {
-                        dd($transacao);
-                        // in_array($permissaos)
-                        return true; //array_key_exists($transacao->id, $permissaos);
-                    });
+                    // dd($transacao, $permissaos);
+                    // Gate::define($transacao->permissao, function () use ($transacao) {
+                    //     dd($transacao);
+                    //     // in_array($permissaos)
+                    //     return true; //array_key_exists($transacao->id, $permissaos);
+                    // });
                 }
             }
         }

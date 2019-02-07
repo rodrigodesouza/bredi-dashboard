@@ -1,5 +1,7 @@
 <?php
 
+use Bredi\BrediDashboard\Http\Middleware\ValidaPermissao;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,14 +13,17 @@
 |
  */
 // \Illuminate\Support\Facades\Auth::routes();
-
+Route::get('/senha', function(){
+    dd(bcrypt("123456"));
+});
 // Authentication Routes...
 Route::get('/login', 'BrediDashboardController@formLogin')->name('bredidashboard::login'); //->as('bredidashboard::');
 Route::post('/login', ['uses' => 'Auth\BrediDashboardLoginController@login', 'as' => 'login']);
 Route::get('logout', 'Auth\BrediDashboardLoginController@logout')->name('bredidashboard::logout');
 // Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::prefix('controle')
-    ->middleware('auth')
+    ->middleware('auth', ValidaPermissao::class)
+    // ->middleware(ValidaPermissao::class)
     ->as('bredidashboard::')
     ->group(
         function () {
@@ -34,3 +39,5 @@ Route::prefix('controle')
             // dd(config('bredidashboard.name'));
             // Route::get('/controle', ['uses' => 'BrediDashboardController@index']);
         });
+
+Route::get('/restrito', ['uses' => 'BrediDashboardController@index', 'permissao' => 'index'])->middleware('auth', ValidaPermissao::class);

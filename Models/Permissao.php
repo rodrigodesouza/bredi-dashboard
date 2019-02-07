@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Permissao extends Model
 {
-    protected $fillable = ['categoria_transacao_id', 'permissao', 'descricao'];
+    protected $fillable = ['grupo_usuario_id', 'transacao_id'];
+
 }
