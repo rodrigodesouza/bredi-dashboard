@@ -2,14 +2,16 @@
 
 namespace Bredi\BrediDashboard\Http\Middleware;
 
-use Auth;
 use Closure;
-use Gate;
-use Log;
+use Illuminate\Support\Facades\Gate;
 use Route;
 
 class ValidaPermissao
 {
+    public function __construct()
+    {
+        $this->vendor = config('bredidashboard.templates')[config('bredidashboard.default')];
+    }
     /**
      * Handle an incoming request.
      *
@@ -19,8 +21,6 @@ class ValidaPermissao
      */
     public function handle($request, Closure $next)
     {
-        // dd(Route::current()->action['permissao']);
-
         if (isset(Route::current()->action['permissao'])) {
             $this->verificaPermissao(Route::current()->action['permissao']);
         }
@@ -30,16 +30,8 @@ class ValidaPermissao
 
     public function verificaPermissao($transacao)
     {
-        dd(session('permissao'), $transacao);
         if (Gate::denies($transacao)) {
-            $this->forbidden();
+            abort(403);
         }
-    }
-
-    public function forbidden()
-    {
-        // Log::alert('Usuário sem permissão para acessar URL', [Auth::user()->nome, url()->current()]);
-        // abort(403);
-        dd('sem permissao');
     }
 }

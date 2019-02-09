@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateGrupoUsuariosTable extends Migration
 {
@@ -20,6 +21,12 @@ class CreateGrupoUsuariosTable extends Migration
             $table->softDeletes();
 
         });
+
+        DB::table('grupo_usuarios')->insert([
+            'nome' => 'superadmin',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     /**

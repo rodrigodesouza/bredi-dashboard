@@ -12,4 +12,7 @@ return [
             'name' => 'brediadminlte',
         ],
     ],
+    'superadmin' => [
+        'contato@bredi.com.br'
+    ]
 ];

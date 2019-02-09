@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
-class BrediDashboardController extends Controller
+class GrupoUsuarioController extends Controller
 {
     public function __construct()
     {
@@ -18,21 +18,16 @@ class BrediDashboardController extends Controller
      */
     public function index()
     {
-        // return view('bredidashboard::index');
-        // dd();
-        return view($this->vendor['name'] . '::controle.index.index');
+        return view($this->vendor['name'] . '::controle.grupo-usuario.index');
     }
-    public function formLogin()
-    {
-        return view($this->vendor['name'] . '::login');
-    }
+
     /**
      * Show the form for creating a new resource.
      * @return Response
      */
     public function create()
     {
-        return view('bredidashboard::create');
+        return view($this->vendor['name'] . '::controle.grupo-usuario.form');
     }
 
     /**

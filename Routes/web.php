@@ -12,10 +12,6 @@ use Bredi\BrediDashboard\Http\Middleware\ValidaPermissao;
 | contains the "web" middleware group. Now create something great!
 |
  */
-// \Illuminate\Support\Facades\Auth::routes();
-Route::get('/senha', function(){
-    dd(bcrypt("123456"));
-});
 // Authentication Routes...
 Route::get('/login', 'BrediDashboardController@formLogin')->name('bredidashboard::login'); //->as('bredidashboard::');
 Route::post('/login', ['uses' => 'Auth\BrediDashboardLoginController@login', 'as' => 'login']);
@@ -23,7 +19,6 @@ Route::get('logout', 'Auth\BrediDashboardLoginController@logout')->name('bredida
 // Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::prefix('controle')
     ->middleware('auth', ValidaPermissao::class)
-    // ->middleware(ValidaPermissao::class)
     ->as('bredidashboard::')
     ->group(
         function () {
@@ -35,9 +30,10 @@ Route::prefix('controle')
             // $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
             // $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
             // $this->post('password/reset', 'Auth\ResetPasswordController@reset');
-            Route::get('/', 'BrediDashboardController@index');
-            // dd(config('bredidashboard.name'));
-            // Route::get('/controle', ['uses' => 'BrediDashboardController@index']);
+            Route::get('/', ['uses' => 'BrediDashboardController@index', 'permissao' => 'dashboard'])->name('dashboard');
+            Route::get('usuarios', ['uses' => 'UsuarioController@index', 'permissao' => 'controle.usuario.index'])->name('controle.usuario.index');
+            Route::get('grupo-de-usuarios', ['uses' => 'GrupoUsuarioController@index', 'permissao' => 'controle.grupo-usuario.index'])->name('controle.grupo-usuario.index');
+            Route::get('permissoes', ['uses' => 'PermissaoController@index', 'permissao' => 'controle.permissao.index'])->name('controle.permissao.index');
         });
 
-Route::get('/restrito', ['uses' => 'BrediDashboardController@index', 'permissao' => 'index'])->middleware('auth', ValidaPermissao::class);
+// Route::get('/restrito', ['uses' => 'BrediDashboardController@index', 'permissao' => 'index'])->middleware('auth', ValidaPermissao::class);

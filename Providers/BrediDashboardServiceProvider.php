@@ -1,12 +1,11 @@
 <?php
 
 namespace Bredi\BrediDashboard\Providers;
-
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Factory;
-// use Illuminate\Support\ServiceProvider;
 use Bredi\BrediDashboard\Models\Permissao;
 use Bredi\BrediDashboard\Models\UserGrupoUsuario;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -27,8 +26,6 @@ class BrediDashboardServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
-        // dd('aqsdfsfsdui');
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
@@ -42,36 +39,20 @@ class BrediDashboardServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         
-        dd('aqwio', Auth::user(), session());
-        if (session()->has('permissao') and session('permissao')) {
-            foreach (session('permissao') as $permissao) {
-                dd($permissao);
+        Gate::before(function ($user, $ability) {
+            if (in_array($user->email, config('bredidashboard.superadmin'))) {
+                return true;
             }
-        }
-        // if (Schema::hasTable('transacaos')) {
-        //     $transacaos = Transacao::get();
+        });
 
-        //     if (isset($transacaos)) {
-        //         foreach ($transacaos as $transacao) {
-        //             Gate::define($transacao->nome, function ($user) use ($transacao) {
-        //                 return array_key_exists($transacao->id, session('permissao'));
-        //             });
-        //         }
-        //     }
-        // }
-            
-        if(\Schema::hasTable('transacaos')) {
-            $transacaos = DB::table('transacaos')->get();
-            $permissaos = DB::table('permissaos')->get()->KeyBy('transacao_id')->toArray();
+        if(Schema::hasTable('transacaos')) {
+            $permissaos = DB::table('permissaos')->select('transacaos.*')->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')->where('grupo_usuario_id', 1)->get();
 
-            if (isset($transacaos)) {
-                foreach ($transacaos as $transacao) {
-                    // dd($transacao, $permissaos);
-                    // Gate::define($transacao->permissao, function () use ($transacao) {
-                    //     dd($transacao);
-                    //     // in_array($permissaos)
-                    //     return true; //array_key_exists($transacao->id, $permissaos);
-                    // });
+            if (isset($permissaos)) {
+                foreach ($permissaos as $permissao) {
+                    Gate::define($permissao->permissao, function ($user) {
+                        return true;
+                    });
                 }
             }
         }
