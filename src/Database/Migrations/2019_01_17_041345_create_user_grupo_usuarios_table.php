@@ -16,8 +16,8 @@ class CreateUserGrupoUsuariosTable extends Migration
         Schema::create('user_grupo_usuarios', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            // $table->foreign('user_id')->references('id')->on('users');
             $table->integer('grupo_usuario_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('grupo_usuario_id')->references('id')->on('grupo_usuarios');
             $table->timestamps();
         });
