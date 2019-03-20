@@ -19,7 +19,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": "7.1.*",
+        "php": ">=7.1.*",
         "barryvdh/laravel-debugbar": "^3.2",
         "igaster/laravel-theme": "^2.0",
         "laravelcollective/html": "^5.4.0",
