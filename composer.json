@@ -13,13 +13,15 @@
     },
     "autoload": {
         "psr-4": {
-            "Bredi\\BrediDashboard\\": ""
-        }
+            "Bredi\\BrediDashboard\\": "src/"
+        },
+        "files": ["src/Http/Helper/Helper.php"]
     },
     "require": {
-        "php": ">=7.1.*",
+        "php": "7.1.*",
         "barryvdh/laravel-debugbar": "^3.2",
         "igaster/laravel-theme": "^2.0",
-        "laravelcollective/html": "^5.4.0"
+        "laravelcollective/html": "^5.4.0",
+        "bredi/bredicoloradmin": "^0.0.1"
     }
 }

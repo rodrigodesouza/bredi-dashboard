@@ -10,6 +10,7 @@ use Bredi\BrediDashboard\Models\Permissao;
 use Bredi\BrediDashboard\Models\UserGrupoUsuario;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+
 class BrediDashboardServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +27,12 @@ class BrediDashboardServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $file = __DIR__.'/../Http/Helper/Helper.php';
+
+        if (file_exists($file)) {
+            require_once($file);
+        }
+
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
