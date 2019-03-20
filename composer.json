@@ -17,6 +17,7 @@
         },
         "files": ["src/Http/Helper/Helper.php"]
     },
+    "minimum-stability": "dev",
     "require": {
         "php": "7.1.*",
         "barryvdh/laravel-debugbar": "^3.2",
