@@ -52,16 +52,21 @@ class BrediDashboardServiceProvider extends ServiceProvider
             }
         });
 
-        if(Schema::hasTable('transacaos')) {
-            $permissaos = DB::table('permissaos')->select('transacaos.*')->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')->where('grupo_usuario_id', 1)->get();
-
-            if (isset($permissaos)) {
-                foreach ($permissaos as $permissao) {
-                    Gate::define($permissao->permissao, function ($user) {
-                        return true;
-                    });
+        try {
+            DB::connection()->getPdo();
+            if (Schema::hasTable('transacaos')) {
+                $permissaos = DB::table('permissaos')->select('transacaos.*')->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')->where('grupo_usuario_id', 1)->get();
+    
+                if (isset($permissaos)) {
+                    foreach ($permissaos as $permissao) {
+                        Gate::define($permissao->permissao, function ($user) {
+                            return true;
+                        });
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            // dd("Não foi possível conectar ao bando de dados");
         }
     }
     /**
