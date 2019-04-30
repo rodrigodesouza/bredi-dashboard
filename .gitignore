@@ -3,3 +3,4 @@ src/Resources/assets/
 composer.lock
 package-lock.json
 vendor/
+.DS_Store

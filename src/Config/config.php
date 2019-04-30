@@ -14,5 +14,8 @@ return [
     ],
     'superadmin' => [
         'contato@bredi.com.br'
+    ],
+    'menu' => [
+        
     ]
 ];

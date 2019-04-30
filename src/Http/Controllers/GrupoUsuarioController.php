@@ -5,6 +5,7 @@ namespace Bredi\BrediDashboard\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Bredi\BrediDashboard\Models\GrupoUsuario;
 
 class GrupoUsuarioController extends Controller
 {
@@ -18,7 +19,9 @@ class GrupoUsuarioController extends Controller
      */
     public function index()
     {
-        return view($this->vendor['name'] . '::controle.grupo-usuario.index');
+        $grupoUsuarios = GrupoUsuario::all();
+
+        return view($this->vendor['name'] . '::controle.grupo-usuario.index', compact('grupoUsuarios'));
     }
 
     /**

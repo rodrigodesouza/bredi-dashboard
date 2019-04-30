@@ -5,6 +5,7 @@ namespace Bredi\BrediDashboard\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use App\User;
 
 class UsuarioController extends Controller
 {
@@ -18,7 +19,9 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        return view($this->vendor['name'] . '::controle.usuario.index');
+        $users = User::all();
+        
+        return view($this->vendor['name'] . '::controle.usuario.index', compact('users'));
     }
 
     /**
