@@ -47,6 +47,7 @@ class BrediDashboardServiceProvider extends ServiceProvider
         $this->registerPolicies();
         
         Gate::before(function ($user, $ability) {
+
             if (in_array($user->email, config('bredidashboard.superadmin'))) {
                 return true;
             }

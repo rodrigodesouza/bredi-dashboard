@@ -40,6 +40,20 @@ class GrupoUsuarioController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nome' => 'required|min:2'
+        ]);
+
+        try {
+
+            $input = $request->all();
+
+            GrupoUsuario::create($input);
+
+            return redirect()->route('bredidashboard::controle.grupo-usuario.index')->with('msg', 'Cadastro realizado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('msg', 'Não foi possível realizar o cadastro')->with('error', true)->with('exception', $e->getMessage());
+        }
     }
 
     /**
@@ -55,9 +69,11 @@ class GrupoUsuarioController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('bredidashboard::edit');
+        $grupoUsuario = GrupoUsuario::find($id);
+
+        return view($this->vendor['name'] . '::controle.grupo-usuario.form', compact('grupoUsuario'));
     }
 
     /**
@@ -65,15 +81,38 @@ class GrupoUsuarioController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'nome' => 'required|min:2'
+        ]);
+
+        try {
+
+            $grupoUsuario = GrupoUsuario::find($id)->update($request->all());
+
+            return redirect()->route('bredidashboard::controle.grupo-usuario.index')->with('msg', 'Registro atualizado com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('msg', 'Não foi possível alterar o registro')->with('error', true)->with('exception', $e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy($id)
     {
+        try {
+            $grupoUsuario = GrupoUsuario::find($id);
+
+            $grupoUsuario->delete();
+
+            return redirect()->back()->with('msg', 'Registro excluido com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('msg', 'Não foi possível excluir o registro.');
+        }
     }
 }
