@@ -10,12 +10,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use Rd7\ImagemUpload\ImagemUpload;
 
 class UsuarioController extends Controller
 {
     public function __construct()
     {
         $this->vendor = config('bredidashboard.templates')[config('bredidashboard.default')];
+
+        $this->destino = storage_path() . '/app/public/user/';
+        $this->resolucao = ['p' => ['h' => 150, 'w' => 150], 'm' => ['h' => 500, 'w' => 500]];
+        
     }
     /**
      * Display a listing of the resource.
@@ -36,6 +41,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
+        
         $grupoUsuarios = GrupoUsuario::pluck('nome', 'id');
 
         return view($this->vendor['name'] . '::controle.usuario.form', compact('grupoUsuarios'));
@@ -97,6 +103,15 @@ class UsuarioController extends Controller
         try {
 
             $input = array_filter($request->all());
+
+            $destino = 'user/';
+            $resolucao = ['p' => ['h' => 150, 'w' => 150], 'm' => ['h' => 500, 'w' => 500]];
+
+            $imagens = ImagemUpload::salva(['input_file' => 'imagem', 'destino' => $destino, 'preencher' =>['p'], 'resolucao' => $resolucao]);
+            
+            if ($imagens) {
+                $input['imagem'] = $imagens;
+            }
 
             if (isset($input['password']) and !empty($input['password'])) {
                 $input['password'] = Hash::make($input['password']);
