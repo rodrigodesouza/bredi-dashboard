@@ -18,8 +18,8 @@ class CreateTransacaosTable extends Migration
             $table->increments('id');
             $table->integer('categoria_transacao_id')->unsigned();
             $table->foreign('categoria_transacao_id')->references('id')->on('categoria_transacaos')->onDelete('restrict')->onUpdate('restrict');
-            $table->string('permissao', 250)->unique();
-            $table->string('descricao', 255)->nullable();
+            $table->string('permissao')->unique();
+            $table->string('descricao')->nullable();
             $table->timestamps();
         });
 

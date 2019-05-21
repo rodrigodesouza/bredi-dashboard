@@ -17,7 +17,7 @@ class AddColumnsToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->integer('grupo_usuario_id')->unsigned()->nullable()->after('id');
             $table->foreign('grupo_usuario_id')->references('id')->on('grupo_usuarios');
-            $table->string('imagem', 255)->nullable()->after('email');
+            $table->string('imagem')->nullable()->after('email');
         });
 
         $grupoUsuario = DB::table('grupo_usuarios')->first();

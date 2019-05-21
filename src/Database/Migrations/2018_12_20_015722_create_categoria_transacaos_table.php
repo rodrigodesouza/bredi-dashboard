@@ -16,7 +16,7 @@ class CreateCategoriaTransacaosTable extends Migration
     {
         Schema::create('categoria_transacaos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome', 250);
+            $table->string('nome');
             $table->timestamps();
             $table->softDeletes();
         });
