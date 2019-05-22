@@ -5,6 +5,7 @@ namespace Bredi\BrediDashboard\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Rd7\ImagemUpload\ImagemUpload;
 
 class BrediDashboardController extends Controller
 {
@@ -77,5 +78,25 @@ class BrediDashboardController extends Controller
      */
     public function destroy()
     {
+    }
+
+    /**
+     * Faz upload de imagens do summernote
+     * @return Response
+     */
+    public function uploadEditor(Request $request)
+    {
+        $imagem = ImagemUpload::salva(['input_file' => 'file', 'destino' => 'upload']);//, 'resolucao' => ['p' => ['w' => 100, 'h' => 100], 'm' => ['w' => 100, 'h' => 100]]
+
+        return route('imagem.render', 'upload/' . $imagem);
+
+    }
+
+    public function deleteImageEditor(Request $request)
+    {
+        $nomeImagem = explode("/", $request->get('image'));
+        $deleteImagem = ImagemUpload::deleta(['imagem' => end($nomeImagem), 'destino' => 'upload']);
+
+        return response(['status' => $deleteImagem]);
     }
 }
