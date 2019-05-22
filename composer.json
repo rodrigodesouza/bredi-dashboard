@@ -23,7 +23,7 @@
         "barryvdh/laravel-debugbar": "^3.2",
         "igaster/laravel-theme": "^2.0",
         "laravelcollective/html": "^5.4.0",
-        "rodrigodesouza/laravel-autodeploy": "^0.0.12",
-        "rd7/imagemupload": "^1.1.*"
+        "rodrigodesouza/laravel-autodeploy": "^1.*",
+        "rd7/imagemupload": "^1.*"
     }
 }
