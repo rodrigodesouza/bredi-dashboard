@@ -24,6 +24,7 @@
         "igaster/laravel-theme": "^2.0",
         "laravelcollective/html": "^5.4.0",
         "rodrigodesouza/laravel-autodeploy": "1.*",
-        "rd7/imagemupload": "1.*"
+        "rd7/imagemupload": "1.*",
+        "arcanedev/log-viewer": "4.*"
     }
 }
