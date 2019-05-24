@@ -8,4 +8,6 @@ class Permissao extends Model
 {
     protected $fillable = ['grupo_usuario_id', 'transacao_id'];
 
+    public $timestamps = false;
+
 }

@@ -10,6 +10,7 @@ use Bredi\BrediDashboard\Models\Permissao;
 use Bredi\BrediDashboard\Models\UserGrupoUsuario;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+use Illuminate\Contracts\Auth\Guard;
 
 class BrediDashboardServiceProvider extends ServiceProvider
 {
@@ -25,8 +26,8 @@ class BrediDashboardServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot(Guard $auth)
+    {   
         $file = __DIR__.'/../Http/Helper/Helper.php';
 
         if (file_exists($file)) {
@@ -53,22 +54,24 @@ class BrediDashboardServiceProvider extends ServiceProvider
             }
         });
 
-        try {
-            DB::connection()->getPdo();
-            if (Schema::hasTable('transacaos')) {
-                $permissaos = DB::table('permissaos')->select('transacaos.*')->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')->where('grupo_usuario_id', 1)->get();
-    
-                if (isset($permissaos)) {
-                    foreach ($permissaos as $permissao) {
-                        Gate::define($permissao->permissao, function ($user) {
-                            return true;
-                        });
+        $this->app->booted(function($auth) {
+            try {
+                DB::connection()->getPdo();
+                if (Schema::hasTable('transacaos')) {
+                    $permissaos = DB::table('permissaos')->select('transacaos.*')->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')->where('grupo_usuario_id', Auth::user()->grupo_usuario_id)->get();
+                    // dd($permissaos);
+                    if (isset($permissaos)) {
+                        foreach ($permissaos as $permissao) {
+                            Gate::define($permissao->permissao, function ($user) {
+                                return true;
+                            });
+                        }
                     }
                 }
+            } catch (\Exception $e) {
+                // dd("Não foi possível conectar ao bando de dados", $e);
             }
-        } catch (\Exception $e) {
-            // dd("Não foi possível conectar ao bando de dados");
-        }
+        });
     }
     /**
      * Register the service provider.
@@ -90,6 +93,9 @@ class BrediDashboardServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Config/config.php' => config_path('bredidashboard.php'),
         ], 'config');
+        $this->publishes([
+            __DIR__ . '/../Config/config.php' => config_path('bredidashboard.php'),
+        ], 'bredidashboard-config');
         $this->mergeConfigFrom(
             __DIR__ . '/../Config/config.php', 'bredidashboard'
         );

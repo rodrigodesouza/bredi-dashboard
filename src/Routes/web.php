@@ -50,6 +50,15 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     Route::post('upload-editor', ['uses' => 'BrediDashboardController@uploadEditor', 'permissao' => 'dashboard'])->name('controle.summernote.upload');
     Route::post('delete-image-editor', ['uses' => 'BrediDashboardController@deleteImageEditor', 'permissao' => 'dashboard'])->name('controle.summernote.deleteImageEditor');
 
+
+    Route::get('configuracoes/form', ['uses' => 'ConfigController@edit', 'permissao' => 'controle.config.edit'])->name('controle.config.edit');
+    Route::post('configuracoes/update', ['uses' => 'ConfigController@update', 'permissao' => 'controle.config.update'])->name('controle.config.update');
+
+    Route::get('profile/edit', ['uses' => 'ProfileController@edit', 'permissao' => 'controle.profile.edit'])->name('controle.profile.edit');
+    Route::post('profile/update/{id}', ['uses' => 'ProfileController@update', 'permissao' => 'controle.profile.update'])->name('controle.profile.update');
+    
+    Route::get('permissoes/edit', ['uses' => 'PermissaoController@edit', 'permissao' => 'controle.permissao.edit'])->name('controle.permissao.edit');
+    Route::post('permissoes/update/{id?}', ['uses' => 'PermissaoController@update', 'permissao' => 'controle.permissao.update'])->name('controle.permissao.update');
 });
 
 // Route::get('/restrito', ['uses' => 'BrediDashboardController@index', 'permissao' => 'index'])->middleware('auth', ValidaPermissao::class);

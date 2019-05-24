@@ -29,7 +29,7 @@ class CreateTransacaosTable extends Migration
             DB::table('transacaos')->insert([
                 'categoria_transacao_id' => 1,
                 'permissao' => 'controle.index.index',
-                'descricao' => 'Permite accesso ao Dashboard após o login.',
+                'descricao' => 'Acesso ao Dashboard',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
@@ -40,35 +40,42 @@ class CreateTransacaosTable extends Migration
                 DB::table('transacaos')->insert([
                     'categoria_transacao_id' => $id,
                     'permissao' => 'controle.' . $grupo . '.index',
-                    'descricao' => null,
+                    'descricao' => 'Visualizar',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 DB::table('transacaos')->insert([
                     'categoria_transacao_id' => $id,
-                    'permissao' => 'controle.' . $grupo . '.form',
-                    'descricao' => null,
+                    'permissao' => 'controle.' . $grupo . '.create',
+                    'descricao' => 'Cadastrar',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 DB::table('transacaos')->insert([
                     'categoria_transacao_id' => $id,
-                    'permissao' => 'controle.' . $grupo . '.save',
-                    'descricao' => null,
+                    'permissao' => 'controle.' . $grupo . '.edit',
+                    'descricao' => 'Editar',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+                DB::table('transacaos')->insert([
+                    'categoria_transacao_id' => $id,
+                    'permissao' => 'controle.' . $grupo . '.store',
+                    'descricao' => 'Salvar',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 DB::table('transacaos')->insert([
                     'categoria_transacao_id' => $id,
                     'permissao' => 'controle.' . $grupo . '.update',
-                    'descricao' => null,
+                    'descricao' => 'Alterar',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 DB::table('transacaos')->insert([
                     'categoria_transacao_id' => $id,
-                    'permissao' => 'controle.' . $grupo . '.delete',
-                    'descricao' => null,
+                    'permissao' => 'controle.' . $grupo . '.destroy',
+                    'descricao' => 'Deletar',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);

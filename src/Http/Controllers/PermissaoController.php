@@ -5,6 +5,9 @@ namespace Bredi\BrediDashboard\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Bredi\BrediDashboard\Models\Permissao;
+use Bredi\BrediDashboard\Models\GrupoUsuario;
+use Bredi\BrediDashboard\Models\CategoriaTransacao;
 
 class PermissaoController extends Controller
 {
@@ -18,6 +21,7 @@ class PermissaoController extends Controller
      */
     public function index()
     {
+        return redirect()->route('bredidashboard::controle.permissao.edit');
         return view($this->vendor['name'] . '::controle.permissao.index');
     }
 
@@ -52,9 +56,19 @@ class PermissaoController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit(Request $request, $id = null)
     {
-        return view($this->vendor['name'] . '::controle.permissao.form');
+        $permissao              = Permissao::get();
+        $grupoUsuarios          = GrupoUsuario::pluck('nome', 'id');
+        $categoriaTransacaos    = [];
+
+        $input = $request->only('grupo_usuario_id');
+
+        if (isset($input['grupo_usuario_id'])) {
+            $categoriaTransacaos    = CategoriaTransacao::with('transacaos')->get();
+        }
+        
+        return view($this->vendor['name'] . '::controle.permissao.form', compact('permissao', 'grupoUsuarios', 'input', 'categoriaTransacaos'));
     }
 
     /**
@@ -62,8 +76,35 @@ class PermissaoController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id = null)
     {
+        $request->validate([
+            'transacao' => 'required'
+        ]);
+        
+        try {
+        
+            if(!empty($id)) {
+
+                if(count($request->get('transacao')) > 0) {
+                    foreach($request->get('transacao') as $transacaos) {
+                        if(count($transacaos)) {
+                            foreach($transacaos as $transacao) {
+                                
+                                Permissao::create([
+                                    'grupo_usuario_id' => $id,
+                                    'transacao_id' => $transacao
+                                ]);
+                            }
+                        }    
+                    }
+                }
+            }
+
+            return redirect()->back()->with('msg', 'Operação finalizada!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('msg', 'Erro ao realizar a operação!')->with('error', true)->with('exception', $e->getMessage());
+        }
     }
 
     /**
