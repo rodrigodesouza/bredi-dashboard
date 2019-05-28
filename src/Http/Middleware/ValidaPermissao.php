@@ -24,6 +24,8 @@ class ValidaPermissao
      */
     public function handle($request, Closure $next)
     {
+        $this->loadPermissoes();
+
         if (isset(Route::current()->action['permissao'])) {
             $this->verificaPermissao(Route::current()->action['permissao']);
         }
@@ -31,23 +33,31 @@ class ValidaPermissao
         return $next($request);
     }
 
-    public function verificaPermissao($transacao)
+    public function loadPermissoes()
     {
         if (Schema::hasTable('transacaos')) {
-            $permissaos = Permissao::select('transacaos.*', 'permissaos.grupo_usuario_id')
-                            ->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')
-                            ->where('permissaos.grupo_usuario_id', Auth::user()->grupo_usuario_id)
-                            ->get();
+            $user = Auth::user();
+            
+            if (!in_array($user->email, config('bredidashboard.superadmin'))) {
+                
+                $permissaos = Permissao::select('transacaos.*', 'permissaos.grupo_usuario_id')
+                                ->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')
+                                ->where('permissaos.grupo_usuario_id', $user->grupo_usuario_id)
+                                ->get();
 
-            foreach($permissaos as $permissao) {
-                Gate::define($permissao->permissao, function ($user) use ($transacao) {
-                    return true;
-                });
+                foreach($permissaos as $permissao) {
+                    Gate::define($permissao->permissao, function () {
+                        return true;
+                    });
+                }
             }
+        }
+    }
 
-            if (Gate::denies($transacao)) {
-                abort(403);
-            }
+    public function verificaPermissao($transacao)
+    {
+        if (Gate::denies($transacao)) {
+            abort(403);
         }
     }
 }

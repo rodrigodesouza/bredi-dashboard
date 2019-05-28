@@ -1,21 +1,14 @@
 <?php
 
 namespace Bredi\BrediDashboard\Providers;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+
 use Illuminate\Database\Eloquent\Factory;
-use Bredi\BrediDashboard\Models\Permissao;
-use Bredi\BrediDashboard\Models\Transacao;
-use Bredi\BrediDashboard\Models\UserGrupoUsuario;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Gate;
 
 class BrediDashboardServiceProvider extends ServiceProvider
 {
-    
+
     /**
      * The policy mappings for the application.
      *
@@ -40,10 +33,10 @@ class BrediDashboardServiceProvider extends ServiceProvider
     {
         // $this->registerPolicies();
 
-        $file = __DIR__.'/../Http/Helper/Helper.php';
+        $file = __DIR__ . '/../Http/Helper/Helper.php';
 
         if (file_exists($file)) {
-            require_once($file);
+            require_once $file;
         }
 
         $this->registerTranslations();
@@ -51,11 +44,11 @@ class BrediDashboardServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        
+
         $this->registraPermissoes();
-  
+
     }
-        
+
     public function registraPermissoes()
     {
         // $this->registerPolicies();
@@ -65,45 +58,6 @@ class BrediDashboardServiceProvider extends ServiceProvider
                 return true;
             }
         });
-
-        // $this->app->booted(function() {
-        //     try {
-        //         DB::connection()->getPdo();
-        //         if (Schema::hasTable('transacaos')) {
-                    // Gate::after(function ($user, $ability) {
-                    // dd($user);
-                    // if (!in_array($user->email, config('bredidashboard.superadmin'))) {
-                    // $permissaos = Permissao::select('transacaos.*', 'permissaos.grupo_usuario_id')
-                    //     ->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')
-                    //     ->where('permissaos.grupo_usuario_id', Auth::user()->grupo_usuario_id)
-                    //     // ->groupBy('transacaos.id')
-                    //     ->get();
-
-                        // foreach($permissaos as $permissao) {
-                            // Gate::define($permissao->permissao, function ($user) use ($transacao) {
-                            //     return true;
-                            //     // return array_key_exists($transacao->id, session('permissao'));
-                            // });
-                        // }
-                    /*
-                    $transacaos = Transacao::get();
-
-                    if (isset($transacaos)) {
-                        foreach ($transacaos as $transacao) {
-                            // dd($transacao->permissao);
-                            Gate::define($transacao->permissao, function ($user) use ($transacao) {
-                                $permissao = Permissao::where('grupo_usuario_id', $user->grupo_usuario_id)->where('transacao_id', $transacao->id)->first();
-                                return (isset($permissao->id) ? true : false);
-                                // return array_key_exists($transacao->id, session('permissao'));
-                            });
-                        }
-                    }
-                    */
-        //         }
-        //     } catch (\Exception $e) {
-        //         // dd("Não foi possível conectar ao bando de dados", $e);
-        //     }
-        // });
     }
     /**
      * Register the service provider.
