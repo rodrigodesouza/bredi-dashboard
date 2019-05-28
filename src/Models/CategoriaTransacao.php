@@ -12,4 +12,5 @@ class CategoriaTransacao extends Model
     {
         return $this->hasMany(Transacao::class);
     }
+
 }

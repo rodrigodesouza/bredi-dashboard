@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Bredi\BrediDashboard\Models\Permissao;
 use Bredi\BrediDashboard\Models\GrupoUsuario;
 use Bredi\BrediDashboard\Models\CategoriaTransacao;
+use Bredi\BrediDashboard\Models\Transacao;
 
 class PermissaoController extends Controller
 {
@@ -58,17 +59,19 @@ class PermissaoController extends Controller
      */
     public function edit(Request $request, $id = null)
     {
-        $permissao              = Permissao::get();
+        $permissaos = [];
+
         $grupoUsuarios          = GrupoUsuario::pluck('nome', 'id');
         $categoriaTransacaos    = [];
 
         $input = $request->only('grupo_usuario_id');
 
         if (isset($input['grupo_usuario_id'])) {
-            $categoriaTransacaos    = CategoriaTransacao::with('transacaos')->get();
+            $categoriaTransacaos = CategoriaTransacao::with('transacaos')->get();
+            $permissaos = Permissao::where('grupo_usuario_id', $input['grupo_usuario_id'])->pluck('transacao_id')->toArray();
         }
-        
-        return view($this->vendor['name'] . '::controle.permissao.form', compact('permissao', 'grupoUsuarios', 'input', 'categoriaTransacaos'));
+
+        return view($this->vendor['name'] . '::controle.permissao.form', compact('permissaos', 'grupoUsuarios', 'input', 'categoriaTransacaos'));
     }
 
     /**
@@ -81,23 +84,16 @@ class PermissaoController extends Controller
         $request->validate([
             'transacao' => 'required'
         ]);
-        
+
         try {
         
             if(!empty($id)) {
 
                 if(count($request->get('transacao')) > 0) {
-                    foreach($request->get('transacao') as $transacaos) {
-                        if(count($transacaos)) {
-                            foreach($transacaos as $transacao) {
-                                
-                                Permissao::create([
-                                    'grupo_usuario_id' => $id,
-                                    'transacao_id' => $transacao
-                                ]);
-                            }
-                        }    
-                    }
+            
+                    $grupo_usuario = GrupoUsuario::find($id);
+
+                    $grupo_usuario->permissaos()->sync($request->get('transacao'));
                 }
             }
 

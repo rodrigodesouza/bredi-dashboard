@@ -5,6 +5,9 @@ namespace Bredi\BrediDashboard\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Gate;
 use Route;
+use Bredi\BrediDashboard\Models\Permissao;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class ValidaPermissao
 {
@@ -30,8 +33,21 @@ class ValidaPermissao
 
     public function verificaPermissao($transacao)
     {
-        if (Gate::denies($transacao)) {
-            abort(403);
+        if (Schema::hasTable('transacaos')) {
+            $permissaos = Permissao::select('transacaos.*', 'permissaos.grupo_usuario_id')
+                            ->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')
+                            ->where('permissaos.grupo_usuario_id', Auth::user()->grupo_usuario_id)
+                            ->get();
+
+            foreach($permissaos as $permissao) {
+                Gate::define($permissao->permissao, function ($user) use ($transacao) {
+                    return true;
+                });
+            }
+
+            if (Gate::denies($transacao)) {
+                abort(403);
+            }
         }
     }
 }

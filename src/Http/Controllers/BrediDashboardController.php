@@ -19,8 +19,6 @@ class BrediDashboardController extends Controller
      */
     public function index()
     {
-        // return view('bredidashboard::index');
-        // dd();
         return view($this->vendor['name'] . '::controle.index.index');
     }
     public function formLogin()

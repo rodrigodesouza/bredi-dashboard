@@ -28,7 +28,8 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     // $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
     // $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
     // $this->post('password/reset', 'Auth\ResetPasswordController@reset');
-    Route::get('/', ['uses' => 'BrediDashboardController@index', 'permissao' => 'dashboard'])->name('dashboard');
+    Route::get('/', ['uses' => 'BrediDashboardController@index'])->name('dashboard');
+    // Route::get('/', ['uses' => 'BrediDashboardController@index', 'permissao' => 'dashboard'])->name('dashboard');
     
     Route::get('usuarios', ['uses' => 'UsuarioController@index', 'permissao' => 'controle.usuario.index'])->name('controle.usuario.index');
     Route::get('usuario/create', ['uses' => 'UsuarioController@create', 'permissao' => 'controle.usuario.create'])->name('controle.usuario.create');
@@ -45,7 +46,7 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     Route::get('grupo-de-usuario/delete/{id}', ['uses' => 'GrupoUsuarioController@destroy', 'permissao' => 'controle.grupo-usuario.destroy'])->name('controle.grupo-usuario.destroy');
 
 
-    Route::get('permissoes', ['uses' => 'PermissaoController@index', 'permissao' => 'controle.permissao.index'])->name('controle.permissao.index');
+    
 
     Route::post('upload-editor', ['uses' => 'BrediDashboardController@uploadEditor', 'permissao' => 'dashboard'])->name('controle.summernote.upload');
     Route::post('delete-image-editor', ['uses' => 'BrediDashboardController@deleteImageEditor', 'permissao' => 'dashboard'])->name('controle.summernote.deleteImageEditor');
@@ -59,6 +60,7 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     
     Route::get('permissoes/edit', ['uses' => 'PermissaoController@edit', 'permissao' => 'controle.permissao.edit'])->name('controle.permissao.edit');
     Route::post('permissoes/update/{id?}', ['uses' => 'PermissaoController@update', 'permissao' => 'controle.permissao.update'])->name('controle.permissao.update');
+    Route::get('permissoes', ['uses' => 'PermissaoController@index', 'permissao' => 'controle.permissao.index'])->name('controle.permissao.index');//Não usado. Redireciona pro edit
 });
 
 // Route::get('/restrito', ['uses' => 'BrediDashboardController@index', 'permissao' => 'index'])->middleware('auth', ValidaPermissao::class);
