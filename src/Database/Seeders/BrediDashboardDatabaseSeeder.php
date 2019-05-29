@@ -17,10 +17,10 @@ class BrediDashboardDatabaseSeeder extends Seeder
     {
         // Model::unguard();
         User::updateOrCreate([
-            'email' => 'admin@admin.com',
+            'email' => 'contato@bredi.com.br',
         ], [
             'name' => 'Bredi Tecnologia Digital',
-            'email' => 'admin@admin.com',
+            'email' => 'contato@bredi.com.br',
             'password' => bcrypt('123456'),
         ]);
         // $this->call("OthersTableSeeder");

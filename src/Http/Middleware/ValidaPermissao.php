@@ -22,11 +22,18 @@ class ValidaPermissao
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
-        $this->loadPermissoes();
+        if (Route::getCurrentRoute()->getName() == "bredidashboard::login" || Route::getCurrentRoute()->getName() == "login") {
+            if (Auth::guard($guard)->check()) {
+                return redirect()->route('bredidashboard::dashboard');
+            }
+        }
 
         if (isset(Route::current()->action['permissao'])) {
+            
+            $this->loadPermissoes();
+
             $this->verificaPermissao(Route::current()->action['permissao']);
         }
 
