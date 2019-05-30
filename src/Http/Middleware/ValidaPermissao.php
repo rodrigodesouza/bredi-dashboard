@@ -24,12 +24,6 @@ class ValidaPermissao
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Route::getCurrentRoute()->getName() == "bredidashboard::login" || Route::getCurrentRoute()->getName() == "login") {
-            if (Auth::guard($guard)->check()) {
-                return redirect()->route('bredidashboard::dashboard');
-            }
-        }
-
         if (isset(Route::current()->action['permissao'])) {
             
             $this->loadPermissoes();
