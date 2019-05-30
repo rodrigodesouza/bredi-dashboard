@@ -24,9 +24,9 @@ class ValidaPermissao
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        $this->loadPermissoes();
+
         if (isset(Route::current()->action['permissao'])) {
-            
-            $this->loadPermissoes();
 
             $this->verificaPermissao(Route::current()->action['permissao']);
         }
