@@ -69,6 +69,9 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     Route::get('permissoes/edit', ['uses' => 'PermissaoController@edit', 'permissao' => 'controle.permissao.edit'])->name('controle.permissao.edit');
     Route::post('permissoes/update/{id?}', ['uses' => 'PermissaoController@update', 'permissao' => 'controle.permissao.update'])->name('controle.permissao.update');
     Route::get('permissoes', ['uses' => 'PermissaoController@index', 'permissao' => 'controle.permissao.index'])->name('controle.permissao.index');//Não usado. Redireciona pro edit
+
+    Route::post('ordenacao', ['uses' => 'BrediDashboardController@ordenacaoUpdate'])->name('controle.ordenacao.update');
+
 });
 
 // Route::get('/restrito', ['uses' => 'BrediDashboardController@index', 'permissao' => 'index'])->middleware('auth', ValidaPermissao::class);

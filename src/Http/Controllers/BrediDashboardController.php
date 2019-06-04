@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Rd7\ImagemUpload\ImagemUpload;
+use Illuminate\Support\Facades\DB;
 
 class BrediDashboardController extends Controller
 {
@@ -96,5 +97,33 @@ class BrediDashboardController extends Controller
         $deleteImagem = ImagemUpload::deleta(['imagem' => end($nomeImagem), 'destino' => 'upload']);
 
         return response(['status' => $deleteImagem]);
+    }
+
+    public function ordenacaoUpdate(Request $request)
+    {
+        $tabela = $request->get('table');
+        $lista = $request->get('order');
+        
+        try {
+            foreach ($lista as $id => $value) {
+                $id = (int) $value['id'];
+                $cases[] = "WHEN {$id} then ?";
+                $params[] = $value['order'];
+                $ids[] = $id;
+            }
+        
+            $ids = implode(',', $ids);
+            $cases = implode(' ', $cases);
+            $params[] = \Carbon\Carbon::now();
+    
+            $update = \DB::update("UPDATE `{$tabela}` SET `order` = CASE `id` {$cases} END, `updated_at` = ? WHERE `id` in ({$ids})", $params);
+
+            return response(['msg' => $update, 'error' => false], 200);
+
+        } catch (\Exception $e) {
+            return response(['error' => $e->getMessage()], 500);
+        }
+        
+
     }
 }
