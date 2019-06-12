@@ -1,6 +1,12 @@
 {
     "name": "bredi/bredi-dashboard",
-    "description": "",
+    "description": "Dashboard base em Laravel",
+    "keywords": [
+        "laravel",
+        "laravel-dashboard",
+        "dashboard",
+        "base-dashboard"
+    ],
     "authors": [{
         "name": "Rodrigo de Souza",
         "email": "rd7.rodrigo@gmail.com"

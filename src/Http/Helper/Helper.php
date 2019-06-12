@@ -25,3 +25,18 @@ function activeMenu($rota)
         return (strpos(\Illuminate\Support\Facades\Route::currentRouteName(), $rota) === 0) ? ' active ' : '';
     }
 }
+
+if (!function_exists('decimalParaPagina')) {
+    function decimalParaPagina($valor, $prefixo = null)
+    {
+        if (isset($valor)) {
+            return $prefixo . number_format($valor, 2, ',', '.');
+        }
+    }
+}
+if (!function_exists('decimalParaBanco')) {
+    function decimalParaBanco($valor)
+    {
+        return str_replace("R$ ", "", str_replace(",", ".", str_replace(".", "", $valor)));
+    }
+}
