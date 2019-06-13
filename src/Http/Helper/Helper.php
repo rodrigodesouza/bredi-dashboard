@@ -1,5 +1,8 @@
 <?php
 use Illuminate\Support\Facades\File;
+
+require base_path() . '/Bredi/bredi-dashboard/src/Deploy/index.php';
+
 function loadAssetJs($path){
     $file = File::get($path);
     echo "<script>" . $file . "</script>";
