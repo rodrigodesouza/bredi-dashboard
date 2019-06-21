@@ -26,6 +26,8 @@ Route::post('/login', ['uses' => 'Auth\BrediDashboardLoginController@login', 'as
 Route::get('logout', 'Auth\BrediDashboardLoginController@logout')->name('bredidashboard::logout');
 // Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 
+Route::get('selectload', ['uses' => 'BrediDashboardController@selectload'])->name('controle.selectload.get');
+
 Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.prefix') : 'controle'))->middleware('auth', ValidaPermissao::class)->as('bredidashboard::')->group(function () {
     
     Route::get('template', function () {
@@ -53,12 +55,8 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     Route::post('grupo-de-usuario/update/{id}', ['uses' => 'GrupoUsuarioController@update', 'permissao' => 'controle.grupo-usuario.update'])->name('controle.grupo-usuario.update');
     Route::get('grupo-de-usuario/delete/{id}', ['uses' => 'GrupoUsuarioController@destroy', 'permissao' => 'controle.grupo-usuario.destroy'])->name('controle.grupo-usuario.destroy');
 
-
-    
-
     Route::post('upload-editor', ['uses' => 'BrediDashboardController@uploadEditor', 'permissao' => 'dashboard'])->name('controle.summernote.upload');
     Route::post('delete-image-editor', ['uses' => 'BrediDashboardController@deleteImageEditor', 'permissao' => 'dashboard'])->name('controle.summernote.deleteImageEditor');
-
 
     Route::get('configuracoes/form', ['uses' => 'ConfigController@edit', 'permissao' => 'controle.config.edit'])->name('controle.config.edit');
     Route::post('configuracoes/update', ['uses' => 'ConfigController@update', 'permissao' => 'controle.config.update'])->name('controle.config.update');
@@ -71,7 +69,7 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     Route::get('permissoes', ['uses' => 'PermissaoController@index', 'permissao' => 'controle.permissao.index'])->name('controle.permissao.index');//Não usado. Redireciona pro edit
 
     Route::post('ordenacao', ['uses' => 'BrediDashboardController@ordenacaoUpdate'])->name('controle.ordenacao.update');
-
+    
 });
 
 // Route::get('/restrito', ['uses' => 'BrediDashboardController@index', 'permissao' => 'index'])->middleware('auth', ValidaPermissao::class);

@@ -8,6 +8,8 @@ use Illuminate\Routing\Controller;
 use Rd7\ImagemUpload\ImagemUpload;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Request as Requ;
+
 class BrediDashboardController extends Controller
 {
     public function __construct()
@@ -86,8 +88,12 @@ class BrediDashboardController extends Controller
     public function uploadEditor(Request $request)
     {
         $imagem = ImagemUpload::salva(['input_file' => 'file', 'destino' => 'upload']);//, 'resolucao' => ['p' => ['w' => 100, 'h' => 100], 'm' => ['w' => 100, 'h' => 100]]
+        
+        $host = Requ::root();
 
-        return route('imagem.render', 'upload/' . $imagem);
+        $rota = str_replace($host, "", route('imagem.render', 'upload/' . $imagem));
+
+        return $rota;
 
     }
 
@@ -123,7 +129,14 @@ class BrediDashboardController extends Controller
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 500);
         }
+    }
+     
+    public function selectload(Request $request)
+    {	
+        $return = DB::table($request->get('tabela'))->whereRaw($request->get('chave') . ' = ' . $request->get('id'))->whereNull('deleted_at')->pluck('nome', 'id');
         
+        return response(['json' => $return]);
 
     }
+
 }
