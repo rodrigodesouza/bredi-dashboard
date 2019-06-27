@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Rd7\ImagemUpload\ImagemUpload;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 use Illuminate\Support\Facades\Request as Requ;
 
@@ -133,7 +134,16 @@ class BrediDashboardController extends Controller
      
     public function selectload(Request $request)
     {	
-        $return = DB::table($request->get('tabela'))->whereRaw($request->get('chave') . ' = ' . $request->get('id'))->whereNull('deleted_at')->pluck('nome', 'id');
+        // $return = DB::table($request->get('tabela'))->whereRaw($request->get('chave') . ' = ' . $request->get('id'))->whereNull('deleted_at')->pluck('nome', 'id');
+        
+        // return response(['json' => $return]);
+        $return = DB::table($request->get('tabela'))->whereRaw(str_replace("]", "", str_replace("[", "", $request->get('chave'))) . ' = ' . $request->get('id'));
+
+        if (Schema::hasColumn($request->get('tabela'), 'deleted_at')){
+            $return->whereNull('deleted_at');
+        }
+        
+        $return = $return->pluck('nome', 'id');
         
         return response(['json' => $return]);
 
