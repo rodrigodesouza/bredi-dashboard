@@ -3,7 +3,7 @@
 namespace Bredi\BrediDashboard\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User as Usuario;
+use App\User as Usuario;
 
 class User extends Usuario
 {
