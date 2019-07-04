@@ -4,6 +4,7 @@ namespace Bredi\BrediDashboard\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User as Usuario;
+use Bredi\BrediDashboard\Scope\PermissaoScope;
 
 class User extends Usuario
 {
@@ -14,6 +15,13 @@ class User extends Usuario
         'password',
         'imagem'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new PermissaoScope);
+    }
 
     
     public function grupoUsuario()

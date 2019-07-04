@@ -45,20 +45,8 @@ class BrediDashboardServiceProvider extends ServiceProvider
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
-        $this->registraPermissoes();
-
     }
 
-    public function registraPermissoes()
-    {
-        // $this->registerPolicies();
-        //se o usuário for Super Admin, todas as permissões são autorizadas.
-        Gate::before(function ($user, $ability) {
-            if (in_array($user->email, config('bredidashboard.superadmin'))) {
-                return true;
-            }
-        });
-    }
     /**
      * Register the service provider.
      *

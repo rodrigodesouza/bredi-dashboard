@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Rd7\ImagemUpload\ImagemUpload;
+use Illuminate\Support\Facades\Auth;
 
 class UsuarioController extends Controller
 {
@@ -136,12 +137,16 @@ class UsuarioController extends Controller
         try {
             $user = User::find($user_id);
 
+            if ($user->id == Auth::id()) {
+                return redirect()->back()->with('msg', 'Não é possível excluir a sí mesmo.')->with('error', true);
+            }
+
             $user->delete();
 
             return redirect()->back()->with('msg', 'Registro excluido com sucesso!');
 
         } catch (\Exception $e) {
-            return redirect()->back()->with('msg', 'Não foi possível excluir o registro.');
+            return redirect()->back()->with('msg', 'Não foi possível excluir o registro.')->with('error', true);
         }
 
     }

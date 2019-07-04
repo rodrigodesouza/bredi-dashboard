@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Gate;
 use Route;
 use Bredi\BrediDashboard\Models\Permissao;
+use Bredi\BrediDashboard\Models\Transacao;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,17 +40,30 @@ class ValidaPermissao
         if (Schema::hasTable('transacaos')) {
             $user = Auth::user();
             
-            if (!in_array($user->email, config('bredidashboard.superadmin'))) {
-                
+            if (isset($user->grupo_usuario_id) and $user->grupo_usuario_id != 1) {
+            // if (!in_array($user->email, config('bredidashboard.superadmin'))) {
                 $permissaos = Permissao::select('transacaos.*', 'permissaos.grupo_usuario_id')
                                 ->join('transacaos', 'permissaos.transacao_id', '=', 'transacaos.id')
                                 ->where('permissaos.grupo_usuario_id', $user->grupo_usuario_id)
                                 ->get();
 
-                foreach($permissaos as $permissao) {
-                    Gate::define($permissao->permissao, function () {
-                        return true;
-                    });
+                if(count($permissaos) > 0) {
+                    foreach($permissaos as $permissao) {
+                        Gate::define($permissao->permissao, function () {
+                            return true;
+                        });
+                    }
+                }
+            } else {
+
+                $permissaos = Transacao::get();
+
+                if(count($permissaos) > 0) {
+                    foreach($permissaos as $permissao) {
+                        Gate::define($permissao->permissao, function () {
+                            return true;
+                        });
+                    }
                 }
             }
         }

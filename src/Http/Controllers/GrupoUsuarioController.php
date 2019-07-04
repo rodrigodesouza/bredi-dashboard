@@ -89,7 +89,7 @@ class GrupoUsuarioController extends Controller
 
         try {
 
-            $grupoUsuario = GrupoUsuario::find($id)->update($request->all());
+            $grupoUsuario = GrupoUsuario::whereId($id)->update($request->all());
 
             return redirect()->route('bredidashboard::controle.grupo-usuario.index')->with('msg', 'Registro atualizado com sucesso!');
 

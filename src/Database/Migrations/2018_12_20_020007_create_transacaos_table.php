@@ -34,7 +34,7 @@ class CreateTransacaosTable extends Migration
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            $array = [2 => 'grupo-usuario', 3 => 'usuario', 4 => 'categoria-transacao', 5 => 'transacao', 6 => 'permissao'];
+            $array = [2 => 'grupo-usuario', 3 => 'usuario', 4 => 'categoria-transacao', 5 => 'transacao', 6 => 'permissao', 'config'];
 
             foreach ($array as $id => $grupo) {
                 DB::table('transacaos')->insert([
