@@ -43,3 +43,30 @@ if (!function_exists('decimalParaBanco')) {
         return str_replace("R$ ", "", str_replace(",", ".", str_replace(".", "", $valor)));
     }
 }
+
+
+function sendResponse($result, $message)
+{
+    $response = [
+        'success' => true,
+        'data'    => $result,
+        'message' => $message,
+    ];
+    
+    return response()->json($response, 200);
+}
+
+
+function sendError($error, $code = 404, $errorMessages = [])
+{
+    $response = [
+        'success' => false,
+        'message' => $error,
+    ];
+
+    if(!empty($errorMessages)){
+        $response['data'] = $errorMessages;
+    }
+    
+    return response()->json($response, $code);
+}
