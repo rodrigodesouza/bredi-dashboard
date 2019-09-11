@@ -55,8 +55,8 @@ Route::prefix((!empty(config('bredidashboard.prefix')) ? config('bredidashboard.
     Route::post('grupo-de-usuario/update/{id}', ['uses' => 'GrupoUsuarioController@update', 'permissao' => 'controle.grupo-usuario.update'])->name('controle.grupo-usuario.update');
     Route::get('grupo-de-usuario/delete/{id}', ['uses' => 'GrupoUsuarioController@destroy', 'permissao' => 'controle.grupo-usuario.destroy'])->name('controle.grupo-usuario.destroy');
 
-    Route::post('upload-editor', ['uses' => 'BrediDashboardController@uploadEditor', 'permissao' => 'dashboard'])->name('controle.summernote.upload');
-    Route::post('delete-image-editor', ['uses' => 'BrediDashboardController@deleteImageEditor', 'permissao' => 'dashboard'])->name('controle.summernote.deleteImageEditor');
+    Route::post('upload-editor', ['uses' => 'BrediDashboardController@uploadEditor', 'permissao' => 'controle.index.index'])->name('controle.summernote.upload');
+    Route::post('delete-image-editor', ['uses' => 'BrediDashboardController@deleteImageEditor', 'permissao' => 'controle.index.index'])->name('controle.summernote.deleteImageEditor');
 
     Route::get('configuracoes/form', ['uses' => 'ConfigController@edit', 'permissao' => 'controle.config.edit'])->name('controle.config.edit');
     Route::post('configuracoes/update', ['uses' => 'ConfigController@update', 'permissao' => 'controle.config.update'])->name('controle.config.update');
