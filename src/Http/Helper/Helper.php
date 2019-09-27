@@ -45,7 +45,7 @@ if (!function_exists('decimalParaBanco')) {
 }
 
 
-function sendResponse($result, $message)
+function sendResponse($result, $message, $code = 200)
 {
     $response = [
         'success' => true,
@@ -53,7 +53,7 @@ function sendResponse($result, $message)
         'message' => $message,
     ];
     
-    return response()->json($response, 200);
+    return response()->json($response, $code);
 }
 
 
