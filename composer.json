@@ -32,6 +32,7 @@
         "laravelcollective/html": "^5.4.0",
         "rodrigodesouza/laravel-autodeploy": "1.*",
         "rd7/imagemupload": "1.*",
-        "arcanedev/log-viewer": "4.*"
+        "arcanedev/log-viewer": "4.*",
+        "vinkla/hashids": "^5.2"
     }
 }
