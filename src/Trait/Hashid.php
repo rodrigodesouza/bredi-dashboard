@@ -17,7 +17,8 @@ trait HashidTrait
      */
     protected static function bootCodigo() {
         static::created(function ($model) {
-            $model->attributes['hash'] = Hashids::encode($model->attributes['id'], 123);
+            $mdHash = substr(uniqid(rand(), true), 0, 3);
+            $model->attributes['hash'] = Hashids::encode($model->attributes['id'], $mdHash);
             $model->save();
         });
     }
