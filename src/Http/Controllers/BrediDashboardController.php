@@ -97,8 +97,8 @@ class BrediDashboardController extends Controller
         $host = Requ::root();
 
         $rota = str_replace($host, "", route('imagem.render', 'upload/' . $imagem));
-
-        return $rota;
+        return response(['location' => $rota]);
+        // return $rota;
 
     }
 
