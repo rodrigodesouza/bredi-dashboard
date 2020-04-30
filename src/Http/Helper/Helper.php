@@ -37,13 +37,13 @@ if (!function_exists('decimalParaPagina')) {
         }
     }
 }
+
 if (!function_exists('decimalParaBanco')) {
     function decimalParaBanco($valor)
     {
         return str_replace("R$ ", "", str_replace(",", ".", str_replace(".", "", $valor)));
     }
 }
-
 
 function sendResponse($result, $message, $code = 200)
 {
@@ -55,7 +55,6 @@ function sendResponse($result, $message, $code = 200)
     
     return response()->json($response, $code);
 }
-
 
 function sendError($error, $code = 404, $errorMessages = [])
 {
@@ -69,4 +68,11 @@ function sendError($error, $code = 404, $errorMessages = [])
     }
     
     return response()->json($response, $code);
+}
+
+function checkRequired($input) {
+    $config = explode('|',config($input));
+    if (in_array('required', $config)) {
+        return 'required';
+    }
 }
