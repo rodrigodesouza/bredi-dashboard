@@ -76,3 +76,8 @@ function checkRequired($input) {
         return 'required';
     }
 }
+
+function rotasControle($funcao, $customMiddleware = [], $groupPrefix = null){
+    $middleware = ['auth', \Bredi\BrediDashboard\Http\Middleware\ValidaPermissao::class];
+    return Route::name($groupPrefix)->prefix(config('bredidashboard.prefix'))->middleware(array_merge($middleware, $customMiddleware))->group($funcao);
+}
