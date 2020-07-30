@@ -61,7 +61,8 @@ class PermissaoController extends Controller
     {
         $permissaos = [];
 
-        $grupoUsuarios          = GrupoUsuario::pluck('nome', 'id');
+        $grupoUsuarios          = GrupoUsuario::where('id', '!=', 1)->pluck('nome', 'id');
+
         $categoriaTransacaos    = [];
 
         $input = $request->only('grupo_usuario_id');
@@ -86,11 +87,11 @@ class PermissaoController extends Controller
         ]);
 
         try {
-        
+
             if(!empty($id)) {
 
                 if(count($request->get('transacao')) > 0) {
-            
+
                     $grupo_usuario = GrupoUsuario::find($id);
 
                     $grupo_usuario->permissaos()->sync($request->get('transacao'));

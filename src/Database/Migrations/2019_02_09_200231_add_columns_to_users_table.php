@@ -20,7 +20,7 @@ class AddColumnsToUsersTable extends Migration
             $table->string('imagem')->nullable()->after('email');
         });
 
-        $grupoUsuario = DB::table('grupo_usuarios')->first();
+        $grupoUsuario = DB::table('grupo_usuarios')->find(1);
 
         DB::table('users')->insert([
             'name' => 'Bredi Tecnologia Digital',

@@ -27,6 +27,12 @@ class CreateGrupoUsuariosTable extends Migration
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
+        DB::table('grupo_usuarios')->insert(
+        [
+            'nome' => 'Administrador',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     /**

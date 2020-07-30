@@ -16,18 +16,25 @@ return [
         'contato@bredi.com.br'
     ],
     'menu' => [
-        
+
+    ],
+    'user' => [
+        'password_validation' => 'required|min:6',
+        'imagem' => [
+            'input_file' => 'imagem',
+            'destino' => 'user/',
+            'resolucao' => ['m' => ['h' => 500, 'w' => 500], 'p' => ['h' => 150, 'w' => 150]],
+            'preencher' =>['p'],
+        ],
     ],
     'background_image' => [
         'input_file' => 'background_image',
         'destino' => 'background_image/',
         'resolucao' => ['h' => 1280, 'w' => 1280]
-        // 'resolucao' => ['p' => ['h' => 200, 'w' => 200], 'g' => ['h' => 980, 'w' => 980]]
-    ]
-    ,
+    ],
     'logo' => [
         'input_file' => 'logo',
         'destino' => 'company/',
-        'resolucao' => ['p' => ['h' => 200, 'w' => 200], 'g' => ['h' => 30, 'w' => 100]]
-    ]
+        'resolucao' => ['g' => ['h' => 30, 'w' => 100], 'p' => ['h' => 200, 'w' => 200]]
+    ],
 ];

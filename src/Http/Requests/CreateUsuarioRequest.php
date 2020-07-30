@@ -16,7 +16,7 @@ class CreateUsuarioRequest extends FormRequest
         return [
             'name' => 'required|min:2',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
+            'password' => config('bredidashboard.user.password_validation'),
         ];
     }
 

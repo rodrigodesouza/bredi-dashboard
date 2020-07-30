@@ -21,7 +21,7 @@ class ProfileController extends Controller
 
         $this->destino = storage_path() . '/app/public/user/';
         $this->resolucao = ['p' => ['h' => 150, 'w' => 150], 'm' => ['h' => 500, 'w' => 500]];
-        
+
     }
 
     /**
@@ -48,11 +48,8 @@ class ProfileController extends Controller
 
             $input = array_filter($request->all());
 
-            $destino = 'user/';
-            $resolucao = ['p' => ['h' => 150, 'w' => 150], 'm' => ['h' => 500, 'w' => 500]];
+            $imagens = ImagemUpload::salva(config('bredidashboard.user.imagem'));
 
-            $imagens = ImagemUpload::salva(['input_file' => 'imagem', 'destino' => $destino, 'preencher' =>['p'], 'resolucao' => $resolucao]);
-            
             if ($imagens) {
                 $input['imagem'] = $imagens;
             }
