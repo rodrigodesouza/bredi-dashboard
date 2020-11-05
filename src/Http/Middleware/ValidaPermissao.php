@@ -39,7 +39,7 @@ class ValidaPermissao
     {
         if (Schema::hasTable('transacaos')) {
             $user = Auth::user();
-            
+
             if (isset($user->grupo_usuario_id) and $user->grupo_usuario_id != 1) {
             // if (!in_array($user->email, config('bredidashboard.superadmin'))) {
                 $permissaos = Permissao::select('transacaos.*', 'permissaos.grupo_usuario_id')
@@ -55,16 +55,18 @@ class ValidaPermissao
                     }
                 }
             } else {
+                if (isset($user->grupo_usuario_id) and $user->grupo_usuario_id == 1) {
+                    $permissaos = Transacao::get();
 
-                $permissaos = Transacao::get();
-
-                if(count($permissaos) > 0) {
-                    foreach($permissaos as $permissao) {
-                        Gate::define($permissao->permissao, function () {
-                            return true;
-                        });
+                    if(count($permissaos) > 0) {
+                        foreach($permissaos as $permissao) {
+                            Gate::define($permissao->permissao, function () {
+                                return true;
+                            });
+                        }
                     }
                 }
+
             }
         }
     }
