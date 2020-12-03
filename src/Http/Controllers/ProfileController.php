@@ -48,6 +48,10 @@ class ProfileController extends Controller
 
             $input = array_filter($request->all());
 
+            if(isset($input['actual_password']) and !$this->oldPasswordValid($input)) {
+                return redirect()->back()->withInput()->with('error', true)->with('msg', 'A senha atual é inválida!');
+            }
+
             $imagens = ImagemUpload::salva(config('bredidashboard.user.imagem'));
 
             if ($imagens) {
@@ -63,6 +67,7 @@ class ProfileController extends Controller
             return redirect()->back()->with('msg', 'Registro atualizado com sucesso!');
 
         } catch (\Exception $e) {
+            // dd($e);
             return redirect()->back()->with('msg', 'Não foi possível alterar o registro')->with('error', true)->with('exception', $e->getMessage());
         }
     }
@@ -84,6 +89,14 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('msg', 'Não foi possível excluir o registro.');
         }
+
+    }
+
+    public function oldPasswordValid($input)
+    {
+        $user = User::find(auth()->id());
+
+        return Hash::check($input['actual_password'], $user->password);
 
     }
 }
