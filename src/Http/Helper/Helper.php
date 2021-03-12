@@ -52,7 +52,7 @@ function sendResponse($result, $message, $code = 200)
         'data'    => $result,
         'message' => $message,
     ];
-    
+
     return response()->json($response, $code);
 }
 
@@ -66,7 +66,7 @@ function sendError($error, $code = 404, $errorMessages = [])
     if(!empty($errorMessages)){
         $response['data'] = $errorMessages;
     }
-    
+
     return response()->json($response, $code);
 }
 
